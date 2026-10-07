@@ -4,10 +4,11 @@ public class spellController : MonoBehaviour
 {
     public float spellSpeed = 75f;
     public float spellLifetime = 5f;
+    public float spellDamage = 25f;
     
     void Start ()
     {
-        Invoke("destroySpell", spellLifetime);
+        Invoke("DestroySpell", spellLifetime);
     }
 
     void Update ()
@@ -15,13 +16,14 @@ public class spellController : MonoBehaviour
         transform.position += transform.forward * spellSpeed * Time.deltaTime; //spell movement
     }
 
-    void destroySpell ()
+    void DestroySpell ()
     {
         Destroy(gameObject);
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        
         Destroy(gameObject);
     }
 }
