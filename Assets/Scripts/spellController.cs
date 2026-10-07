@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class spellController : MonoBehaviour
 {
-    public float spellSpeed = 15f;
-    public float spellLifetime = 3f;
+    public float spellSpeed = 75f;
+    public float spellLifetime = 5f;
     
     void Start ()
     {
@@ -16,6 +16,11 @@ public class spellController : MonoBehaviour
     }
 
     void destroySpell ()
+    {
+        Destroy(gameObject);
+    }
+
+    void OnCollisionEnter(Collision collision)
     {
         Destroy(gameObject);
     }
