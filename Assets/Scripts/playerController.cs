@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject BasicSpell;
+
     public Transform cameraTransform;
     public float cameraAngle = 0f;
 
@@ -11,16 +13,26 @@ public class PlayerController : MonoBehaviour
     void Start ()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;;
     }
 
     void Update ()
     {
-        
         Vector3 movement = Vector3.zero;
+        Vector3 spellSpawnPoint = transform.position + transform.forward * 2f;
         Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
         if(Keyboard.current.escapeKey.wasPressedThisFrame){
-            Cursor.visible = !Cursor.visible;
+            if(Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
             //later add settings screen functionality to this etc.
         }
 
@@ -49,5 +61,10 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, mouseDelta.x * sensitivity, 0); // horizontal rotation
         cameraAngle = Mathf.Clamp(cameraAngle - mouseDelta.y * sensitivity, -90f, 90f);
         cameraTransform.localRotation = Quaternion.Euler(cameraAngle, 0, 0); // vertical rotation
+    
+        if(Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Instantiate(BasicSpell, spellSpawnPoint, transform.rotation);
+        }
     }
 }
