@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public GameObject BasicSpell;
+    public GameObject BasicWard;
     public Rigidbody rb;
 
     public Transform cameraTransform;
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     Vector3 movement;
     Vector3 actualMovement;
-    Vector3 normal;
+    Vector3 wallNormal;
 
     public float speed = 5f;
     public float sensitivity = 0.1f;
@@ -43,6 +44,25 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, mouseDelta.x * sensitivity, 0); // horizontal rotation
         cameraAngle = Mathf.Clamp(cameraAngle - mouseDelta.y * sensitivity, -90f, 90f);
         cameraTransform.localRotation = Quaternion.Euler(cameraAngle, 0, 0); // vertical rotation
+
+        // raycast related code
+        if(Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hitInfo)){
+            BaseController baseController = hitInfo.collider.gameObject.GetComponent<BaseController>();
+            if(baseController != null 
+            && baseController.isInteractable == true 
+            && Keyboard.current.eKey.wasPressedThisFrame
+            ){ 
+                //Instantiate(BasicWard, baseController.transform.position); USE WHEN U START ADDING MORE WARDS
+                if(BasicWard.activeSelf == false){
+                    BasicWard.SetActive(true);
+                    Debug.Log("Activated Ward");
+                }
+                else if (BasicWard.activeSelf == true){
+                    BasicWard.SetActive(false);
+                    Debug.Log("Deactivated Ward");
+                }
+            }
+        }
     
         //spell related code
         Vector3 spellSpawnPoint = transform.position + transform.forward * 2f;
@@ -77,14 +97,14 @@ public class PlayerController : MonoBehaviour
     
     void OnCollisionStay (Collision collision)
     {
-        normal = collision.contacts[0].normal;
+        wallNormal = collision.contacts[0].normal;
     }
     
     void FixedUpdate ()
     {
-        if(Vector3.Dot(movement, normal) <= 0)
+        if(Vector3.Dot(movement, wallNormal) <= 0)
         {
-            actualMovement = Vector3.ProjectOnPlane(movement, normal);
+            actualMovement = Vector3.ProjectOnPlane(movement, wallNormal);
             rb.linearVelocity = actualMovement * speed;
         }
         else {

@@ -395,14 +395,13 @@ GameObject:
   - component: {fileID: 618315192}
   - component: {fileID: 618315191}
   - component: {fileID: 618315190}
-  - component: {fileID: 618315194}
   m_Layer: 0
   m_Name: BasicWard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &618315190
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -496,19 +495,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &618315194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618315189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 955c6b183c0352342bcc3d292c3563ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WardController
-  wardRadius: 12.5
 --- !u!1 &728879971
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,8 +507,8 @@ GameObject:
   - component: {fileID: 728879975}
   - component: {fileID: 728879974}
   - component: {fileID: 728879973}
+  - component: {fileID: 728879972}
   - component: {fileID: 728879977}
-  - component: {fileID: 728879978}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -530,6 +516,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &728879972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728879971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4382943f212a038479a8c913ea32f0aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  BasicSpell: {fileID: 8644312147516469205, guid: ab63f86f2cee0d6418327ff0c8f76e7e, type: 3}
+  BasicWard: {fileID: 0}
+  rb: {fileID: 728879977}
+  cameraTransform: {fileID: 330585546}
+  cameraAngle: 0
+  speed: 5
+  sensitivity: 0.1
 --- !u!136 &728879973
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -653,25 +658,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &728879978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728879971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4382943f212a038479a8c913ea32f0aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  BasicSpell: {fileID: 8644312147516469205, guid: ab63f86f2cee0d6418327ff0c8f76e7e, type: 3}
-  BasicWard: {fileID: 618315189}
-  rb: {fileID: 0}
-  cameraTransform: {fileID: 330585546}
-  cameraAngle: 0
-  speed: 5
-  sensitivity: 0.1
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
