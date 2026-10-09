@@ -48,18 +48,17 @@ public class PlayerController : MonoBehaviour
         // raycast related code
         if(Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hitInfo)){
             BaseController baseController = hitInfo.collider.gameObject.GetComponent<BaseController>();
+            WardController wardController = BasicWard.GetComponent<WardController>();
             if(baseController != null 
             && baseController.isInteractable == true 
             && Keyboard.current.eKey.wasPressedThisFrame
             ){ 
                 //Instantiate(BasicWard, baseController.transform.position); USE WHEN U START ADDING MORE WARDS
                 if(BasicWard.activeSelf == false){
-                    BasicWard.SetActive(true);
-                    Debug.Log("Activated Ward");
+                    wardController.ActivateWard();
                 }
                 else if (BasicWard.activeSelf == true){
-                    BasicWard.SetActive(false);
-                    Debug.Log("Deactivated Ward");
+                    wardController.DeactivateWard();
                 }
             }
         }

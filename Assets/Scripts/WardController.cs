@@ -3,14 +3,30 @@ using UnityEngine;
 public class WardController : MonoBehaviour
 {
     public float wardRadius = 12.5f; 
+    public GameObject BasicWard;
+
     void Start ()
     {
-        InvokeRepeating("DealDamage", 1f, 0.5f);
+        
     }
 
     void Update ()
     {
         
+    }
+
+    public void ActivateWard ()
+    {
+        BasicWard.SetActive(true);
+        InvokeRepeating("DealDamage", 1f, 0.5f);
+            Debug.Log("Activated ward");
+    }
+
+    public void DeactivateWard ()
+    {
+        CancelInvoke("DealDamage");
+        BasicWard.SetActive(false);
+            Debug.Log("Deactivated ward");
     }
 
     void DealDamage ()

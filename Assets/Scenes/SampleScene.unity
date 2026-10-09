@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WardController
   wardRadius: 12.5
+  BasicWard: {fileID: 618315189}
 --- !u!1 &728879971
 GameObject:
   m_ObjectHideFlags: 0
