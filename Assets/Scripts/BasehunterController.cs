@@ -7,19 +7,28 @@ public class BasehunterController : MonoBehaviour
     // Such as gates, any point of a weak wall, gatehouses etc.
     public float maximumHealth = 100f;
     public float currentHealth = 100f;
+    public float enemySpeed = 1f;
+    public bool isAttacking = false;
 
     public Transform target;
 
-    public float enemySpeed = 1f;
-
     void Update     ()
     {            
+        float distanceToTarget = Vector3.Distance(target.position, transform.position);
         Vector3 direction = target.position - transform.position;
         direction.y = 0;
-
+        
         if(direction != Vector3.zero){
             transform.rotation = Quaternion.LookRotation(direction);
-            transform.position += transform.forward * enemySpeed * Time.deltaTime;
+            if(distanceToTarget >= 5){
+                //hardcoded distance due to geometry in prototype version of game.
+                //commented out for now but if the enemy ever starts moving away from attack range
+                //isAttacking = false;
+                transform.position += transform.forward * enemySpeed * Time.deltaTime;
+            } else if (isAttacking == false) {
+                isAttacking = true;
+                InvokeRepeating("AttackBase", 1f, 1f);
+            }
         }
     }
 
@@ -28,9 +37,16 @@ public class BasehunterController : MonoBehaviour
         currentHealth -= damage;
         if(currentHealth <= 0)
         {
+            isAttacking = false;
+            CancelInvoke("AttackBase");
             Destroy(gameObject);
         }
-        //Debug.Log("Enemy took " + damage + " damage. Health: " + currentHealth);
+    }
+
+    public void AttackBase ()
+    {
+        BaseController baseController = target.gameObject.GetComponent<BaseController>();
+        baseController.TakeDamage(50);
     }
 
     void OnCollisionEnter(Collision collision)

@@ -9,4 +9,16 @@ public class BaseController : MonoBehaviour
 
     void Start      (){}
     void Update     (){}
+
+    public void TakeDamage (float damage)
+    {
+        baseCurrentHealth -= damage;
+        if(baseCurrentHealth <= 0)
+        {
+            //handle game loss screen.
+            Debug.Log("You Lost :(");
+            Time.timeScale = 0f;
+        }
+        Debug.Log("Base took " + damage + " damage. Health: " + baseCurrentHealth);
+    }
 }
