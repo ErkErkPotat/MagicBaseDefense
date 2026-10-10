@@ -35,10 +35,16 @@ public class WardController : MonoBehaviour
         foreach(Collider thingInWard in thingsWithinWard)
         {
             EnemyController enemyController = thingInWard.gameObject.GetComponent<EnemyController>();
+            BasehunterController hunterController = thingInWard.gameObject.GetComponent<BasehunterController>();
             if(enemyController != null)
             {
                 enemyController.TakeDamage(10);
-                Debug.Log("Ward Damaged Enemy");
+                Debug.Log("Ward damaged Enemy");
+            }
+            if(hunterController != null)
+            {
+                hunterController.TakeDamage(10);
+                Debug.Log("Ward damaged Basehunter");
             }
         }
     }
