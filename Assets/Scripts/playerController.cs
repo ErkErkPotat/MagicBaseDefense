@@ -14,8 +14,11 @@ public class PlayerController : MonoBehaviour
     Vector3 actualMovement;
     Vector3 wallNormal;
 
+    public float verticalAimOffset = 2f;
     public float speed = 5f;
     public float sensitivity = 0.1f;
+    public float spellSpeed = 75f;    
+
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
@@ -65,9 +68,13 @@ public class PlayerController : MonoBehaviour
     
         //spell related code
         Vector3 spellSpawnPoint = transform.position + transform.forward * 2f;
+
         if(Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Instantiate(BasicSpell, spellSpawnPoint, transform.rotation);
+            GameObject spawnedSpell = Instantiate(BasicSpell, spellSpawnPoint, transform.rotation);
+            Rigidbody spellRb = spawnedSpell.GetComponent<Rigidbody>();
+            Vector3 spellDirection = cameraTransform.rotation * Quaternion.Euler(-verticalAimOffset,0,0) * Vector3.forward;
+            spellRb.linearVelocity = spellSpeed * spellDirection;
         }
 
         //movement related code

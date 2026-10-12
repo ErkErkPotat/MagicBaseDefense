@@ -19,14 +19,14 @@ public class WardController : MonoBehaviour
     {
         BasicWard.SetActive(true);
         InvokeRepeating("DealDamage", 1f, 0.5f);
-            Debug.Log("Activated ward");
+            //Debug.Log("Activated ward");
     }
 
     public void DeactivateWard ()
     {
         CancelInvoke("DealDamage");
         BasicWard.SetActive(false);
-            Debug.Log("Deactivated ward");
+            //Debug.Log("Deactivated ward");
     }
 
     void DealDamage ()
@@ -39,12 +39,12 @@ public class WardController : MonoBehaviour
             if(enemyController != null)
             {
                 enemyController.TakeDamage(10);
-                Debug.Log("Ward damaged Enemy");
+                //Debug.Log("Ward damaged Enemy");
             }
             if(hunterController != null)
             {
                 hunterController.TakeDamage(10);
-                Debug.Log("Ward damaged Basehunter");
+                //Debug.Log("Ward damaged Basehunter");
             }
         }
     }

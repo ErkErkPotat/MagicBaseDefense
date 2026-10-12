@@ -19,6 +19,6 @@ public class BaseController : MonoBehaviour
             Debug.Log("You Lost :(");
             Time.timeScale = 0f;
         }
-        Debug.Log("Base took " + damage + " damage. Health: " + baseCurrentHealth);
+        //Debug.Log("Base took " + damage + " damage. Health: " + baseCurrentHealth);
     }
 }

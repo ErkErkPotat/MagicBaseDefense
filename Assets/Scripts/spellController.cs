@@ -13,7 +13,7 @@ public class SpellController : MonoBehaviour
 
     void Update ()
     {
-        transform.position += transform.forward * spellSpeed * Time.deltaTime; //spell movement
+
     }
 
     void DestroySpell ()

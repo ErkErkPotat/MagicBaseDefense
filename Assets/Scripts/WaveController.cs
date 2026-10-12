@@ -24,7 +24,7 @@ public class WaveController : MonoBehaviour
 
         Vector3 spawnPosition = transform.position + new Vector3(xOffset, 0f, zOffset);
         GameObject spawnedEnemy = Instantiate(BaseHuntingEnemy, spawnPosition, Quaternion.identity);
-        BasehunterController _hunterController = spawnedEnemy.GetComponent<BasehunterController>();
-        _hunterController.target = target;
+        BasehunterController hunterController = spawnedEnemy.GetComponent<BasehunterController>();
+        hunterController.target = target;
     }
 }

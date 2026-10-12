@@ -1,0 +1,65 @@
+[33mcommit fb90b2d1ad8603891b2a0a6f0502f5adf902278d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Sun Oct 11 01:27:37 2026 +0300
+
+    Basehunter enemy is now able to attack & destroy the base, reaching a loss state.
+
+[33mcommit bcb6619bbff805cd4922cf30aebb29d5eb13c7fb[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Sat Oct 10 20:55:11 2026 +0300
+
+    Added new type of enemy 'Basehunter' and added circular spawning of said enemy around the base.
+
+[33mcommit 763530ac43ee310de6a61903c9f7f9f8ba23d3cf[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Fri Oct 9 19:58:09 2026 +0300
+
+    fixed bug where ward would keep damagin enemy after being deactivated.
+
+[33mcommit 6e29e5dc791c0ae3750510da270a3540af276560[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Thu Oct 8 19:04:27 2026 +0300
+
+    Cleaned up naming conventions, added a Basic Ward, Base Interaction and Wards deal damage to enemies.
+
+[33mcommit 9e56e76520e3e64ed1af400809fcac7cd412ada5[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Wed Oct 7 19:54:45 2026 +0300
+
+    Added spell damage and a basic enemy which moves towards you
+
+[33mcommit 7310f413d50fce9776abc95c7e2abc2348a35cc4[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Wed Oct 7 17:20:40 2026 +0300
+
+    Added collision detection & handling
+
+[33mcommit 72565ca6551a14e885fc7a259b5e563a18f049f8[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Wed Oct 7 12:15:47 2026 +0300
+
+    Added basic spell projectile functionality
+
+[33mcommit 8521280ab1b8ade2438444f5400fc097bdb8aa95[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Tue Oct 6 22:57:10 2026 +0300
+
+    Added camera movement & cleaned movement handling
+
+[33mcommit 128f23743c21532447ccdf8b4332210f6414aeee[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Tue Oct 6 21:17:36 2026 +0300
+
+    Saving current Unity scene
+
+[33mcommit 457362ac86d55617189d37b807c1083b3daf64bb[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Tue Oct 6 19:55:28 2026 +0300
+
+    Added basic player movement
+
+[33mcommit e3d56bd005291e36f1c8baf9058e90dcc0730ec3[m
+Author: Erik Dahlberg <dahlbergerik05@gmail.com>
+Date:   Tue Oct 6 19:11:17 2026 +0300
+
+    Initial Unity project commit
