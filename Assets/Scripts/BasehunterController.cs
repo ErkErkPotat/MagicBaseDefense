@@ -11,6 +11,7 @@ public class BasehunterController : MonoBehaviour
     public bool isAttacking = false;
 
     public Transform target;
+    public WaveController waveController;
 
     void Update     ()
     {            
@@ -36,9 +37,10 @@ public class BasehunterController : MonoBehaviour
     {
         currentHealth -= damage;
         if(currentHealth <= 0)
-        {
+        {            
             isAttacking = false;
             CancelInvoke("AttackBase");
+            waveController.EnemyKilled();
             Destroy(gameObject);
         }
     }

@@ -1645,6 +1645,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 884972471}
+    - target: {fileID: 1379912551522270705, guid: 4e98e039ce1f0424bade652931280bbe, type: 3}
+      propertyPath: waveController
+      value: 
+      objectReference: {fileID: 49689326}
     - target: {fileID: 5931346687675898632, guid: 4e98e039ce1f0424bade652931280bbe, type: 3}
       propertyPath: m_Name
       value: BaseHuntingEnemy
