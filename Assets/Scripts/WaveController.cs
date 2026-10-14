@@ -5,6 +5,7 @@ public class WaveController : MonoBehaviour
 {
     public float spawnRadius = 25f;
     private int enemiesAlive = 0;
+    private int currentWaveNumber = 0;
     private bool finishedSpawning = false;
 
     public GameObject BaseHuntingEnemy;
@@ -12,7 +13,7 @@ public class WaveController : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnWave(5));
+        StartCoroutine(SpawnWave(EnemiesPerWave(currentWaveNumber)));
     }
 
     void SpawnEnemy()
@@ -49,6 +50,23 @@ public class WaveController : MonoBehaviour
         CheckWaveComplete();
     }
 
+    IEnumerator StartNextWave()
+    {
+        finishedSpawning = false;
+
+        yield return new WaitForSeconds(5f);
+
+        StartCoroutine(SpawnWave(EnemiesPerWave(currentWaveNumber)));
+    }
+
+    int EnemiesPerWave(int waveNumber){
+        if(waveNumber <= 5) {
+            return 5+waveNumber;
+        } else {
+            return 2*waveNumber;
+        }
+    }
+
     public void EnemyKilled () {
         enemiesAlive--;
         CheckWaveComplete();
@@ -58,7 +76,9 @@ public class WaveController : MonoBehaviour
     {
         if (finishedSpawning && enemiesAlive == 0)
         {
+            currentWaveNumber++;
             Debug.Log("Wave complete!");
+            StartCoroutine(StartNextWave());
         }
     }
 }
