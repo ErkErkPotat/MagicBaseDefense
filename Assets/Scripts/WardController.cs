@@ -1,24 +1,41 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class WardController : MonoBehaviour
-{
-    public float wardRadius = 12.5f; 
+{ 
     public GameObject BasicWard;
+    public Transform baseTransform;
+    public List<WardstoneController> wardstones = new List<WardstoneController>();
 
-    void Start ()
-    {
-        
-    }
+    public float wardRadius;
+    public int minimumWardstones = 3;
+    public bool isActive = false;
 
-    void Update ()
+    public void RegisterWardstone(WardstoneController stone)
     {
-        
+        wardstones.Add(stone);
+
+        stone.parentWard = this;
+
+        if (wardstones.Count == 1)
+        {
+            Vector3 offset = stone.transform.position - baseTransform.position;
+            offset.y = 0f;
+
+            wardRadius = offset.magnitude;
+            //Debug.Log($"Ward radius: {wardRadius}");
+        }
     }
 
     public void ActivateWard ()
     {
+        if (wardstones.Count < minimumWardstones || isActive)
+        {
+            return;
+        }
         BasicWard.SetActive(true);
         InvokeRepeating("DealDamage", 1f, 0.5f);
+        isActive = true;
             //Debug.Log("Activated ward");
     }
 
@@ -26,6 +43,7 @@ public class WardController : MonoBehaviour
     {
         CancelInvoke("DealDamage");
         BasicWard.SetActive(false);
+        isActive = false;
             //Debug.Log("Deactivated ward");
     }
 

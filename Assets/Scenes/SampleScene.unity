@@ -634,8 +634,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955c6b183c0352342bcc3d292c3563ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WardController
-  wardRadius: 12.5
   BasicWard: {fileID: 618315189}
+  baseTransform: {fileID: 884972471}
+  wardstones: []
+  wardRadius: 12.5
 --- !u!1 &619723697
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +908,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   BasicSpell: {fileID: 8644312147516469205, guid: ab63f86f2cee0d6418327ff0c8f76e7e, type: 3}
   BasicWard: {fileID: 618315189}
+  wardController: {fileID: 618315194}
+  Wardstone: {fileID: 7599908860219778244, guid: 4286f5909a9cdd946af91bd1fb68130f, type: 3}
   rb: {fileID: 0}
   cameraTransform: {fileID: 330585546}
   cameraAngle: 0

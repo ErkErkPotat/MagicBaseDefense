@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     public GameObject BasicSpell;
     public GameObject BasicWard;
+    public WardController wardController;
+    public GameObject Wardstone;
     public Rigidbody rb;
 
     public Transform cameraTransform;
@@ -18,13 +20,15 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     public float sensitivity = 0.1f;
     public float spellSpeed = 75f;    
+    public float placementTolerance = 2f;
 
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
 
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;;
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     void Update ()
@@ -51,7 +55,7 @@ public class PlayerController : MonoBehaviour
         // raycast related code
         if(Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hitInfo)){
             BaseController baseController = hitInfo.collider.gameObject.GetComponent<BaseController>();
-            WardController wardController = BasicWard.GetComponent<WardController>();
+            wardController = BasicWard.GetComponent<WardController>();
             if(baseController != null 
             && baseController.isInteractable == true 
             && Keyboard.current.eKey.wasPressedThisFrame
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     
-        //spell related code
+        //spell related code | Spell firing
         Vector3 spellSpawnPoint = transform.position + transform.forward * 2f;
 
         if(Mouse.current.leftButton.wasPressedThisFrame)
@@ -75,6 +79,31 @@ public class PlayerController : MonoBehaviour
             Rigidbody spellRb = spawnedSpell.GetComponent<Rigidbody>();
             Vector3 spellDirection = cameraTransform.rotation * Quaternion.Euler(-verticalAimOffset,0,0) * Vector3.forward;
             spellRb.linearVelocity = spellSpeed * spellDirection;
+        }
+
+        //ward related code | Wardstone placement
+        if(Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            Ray ray = new Ray(
+                cameraTransform.position,
+                cameraTransform.forward
+            );
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+            {
+                Vector3 offset = hit.point - wardController.baseTransform.position;
+                offset.y = 0f;
+
+                float distance = offset.magnitude;
+
+                if (wardController.wardstones.Count == 0 ||
+                    Mathf.Abs(distance - wardController.wardRadius) <= placementTolerance)
+                {
+                    GameObject placedWardstone = Instantiate(Wardstone, hit.point, Quaternion.identity);
+                    WardstoneController stoneController = placedWardstone.GetComponent<WardstoneController>();
+                    wardController.RegisterWardstone(stoneController);
+                }
+            }
         }
 
         //movement related code
