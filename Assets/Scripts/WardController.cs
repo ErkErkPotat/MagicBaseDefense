@@ -8,8 +8,12 @@ public class WardController : MonoBehaviour
     public List<WardstoneController> wardstones = new List<WardstoneController>();
 
     public float wardRadius;
+    public float minimumStoneDistance = 3f;
     public int minimumWardstones = 3;
     public bool isActive = false;
+    public LineRenderer placementCircle;
+    public int circleSegments = 100;
+
 
     public void RegisterWardstone(WardstoneController stone)
     {
@@ -23,8 +27,20 @@ public class WardController : MonoBehaviour
             offset.y = 0f;
 
             wardRadius = offset.magnitude;
+            UpdateWardSize();
+            DrawPlacementCircle();
+
+
             //Debug.Log($"Ward radius: {wardRadius}");
         }
+    }
+
+    void UpdateWardSize()
+    {
+        float diameter = wardRadius * 2f;
+
+        BasicWard.transform.localScale =
+            new Vector3(diameter, diameter, diameter);
     }
 
     public void ActivateWard ()
@@ -36,6 +52,7 @@ public class WardController : MonoBehaviour
         BasicWard.SetActive(true);
         InvokeRepeating("DealDamage", 1f, 0.5f);
         isActive = true;
+        placementCircle.gameObject.SetActive(false);
             //Debug.Log("Activated ward");
     }
 
@@ -64,6 +81,40 @@ public class WardController : MonoBehaviour
                 hunterController.TakeDamage(10);
                 //Debug.Log("Ward damaged Basehunter");
             }
+        }
+    }
+
+    public bool CanPlaceWardstone(Vector3 position)
+    {
+        foreach (WardstoneController stone in wardstones)
+        {
+            Vector3 offset = stone.transform.position - position;
+            offset.y = 0f;
+
+            if (offset.magnitude < minimumStoneDistance)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void DrawPlacementCircle()
+    {
+        placementCircle.gameObject.SetActive(true);
+        placementCircle.positionCount = circleSegments;
+
+        for (int i = 0; i < circleSegments; i++)
+        {
+            float angle = i * Mathf.PI * 2f / circleSegments;
+
+            float x = Mathf.Cos(angle) * wardRadius;
+            float z = Mathf.Sin(angle) * wardRadius;
+
+            Vector3 position = baseTransform.position + new Vector3(x, -1.9f, z);
+            // the magic number -1.9f is because the base is set at y=2 and i want the line to appear 0.1 AGL.            
+
+            placementCircle.SetPosition(i, position);
         }
     }
 }

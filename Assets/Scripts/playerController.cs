@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public WardController wardController;
     public GameObject Wardstone;
     public Rigidbody rb;
+    public LayerMask groundLayer;
 
     public Transform cameraTransform;
     public float cameraAngle = 0f;
@@ -60,7 +61,6 @@ public class PlayerController : MonoBehaviour
             && baseController.isInteractable == true 
             && Keyboard.current.eKey.wasPressedThisFrame
             ){ 
-                //Instantiate(BasicWard, baseController.transform.position); USE WHEN U START ADDING MORE WARDS
                 if(BasicWard.activeSelf == false){
                     wardController.ActivateWard();
                 }
@@ -89,17 +89,22 @@ public class PlayerController : MonoBehaviour
                 cameraTransform.forward
             );
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
             {
                 Vector3 offset = hit.point - wardController.baseTransform.position;
                 offset.y = 0f;
+                Vector3 wardstoneSpawnpoint = new Vector3 (hit.point.x, hit.point.y+1,hit.point.z); 
 
                 float distance = offset.magnitude;
 
-                if (wardController.wardstones.Count == 0 ||
-                    Mathf.Abs(distance - wardController.wardRadius) <= placementTolerance)
+                if (wardController.wardstones.Count == 0 || Mathf.Abs(distance - wardController.wardRadius) <= placementTolerance)
                 {
-                    GameObject placedWardstone = Instantiate(Wardstone, hit.point, Quaternion.identity);
+                    if (!wardController.CanPlaceWardstone(hit.point))
+                    {
+                        Debug.Log("Too close to another wardstone!");
+                        return;
+                    }
+                    GameObject placedWardstone = Instantiate(Wardstone, wardstoneSpawnpoint, Quaternion.identity);
                     WardstoneController stoneController = placedWardstone.GetComponent<WardstoneController>();
                     wardController.RegisterWardstone(stoneController);
                 }
