@@ -6,15 +6,18 @@ public class WardController : MonoBehaviour
     public GameObject BasicWard;
     public Transform baseTransform;
     public List<WardstoneController> wardstones = new List<WardstoneController>();
+    public LineRenderer placementCircle;
 
+    public float minWardRadius = 8f;
+    public float maxWardRadius = 30f;
     public float wardRadius;
     public float minimumStoneDistance = 3f;
+    
     public int minimumWardstones = 3;
-    public bool isActive = false;
-    public LineRenderer placementCircle;
     public int circleSegments = 100;
-
-
+    
+    public bool isActive = false;
+    
     public void RegisterWardstone(WardstoneController stone)
     {
         wardstones.Add(stone);
@@ -86,16 +89,26 @@ public class WardController : MonoBehaviour
 
     public bool CanPlaceWardstone(Vector3 position)
     {
+        Vector3 offset = position - baseTransform.position;
+        offset.y = 0f;
+
+        float distance = offset.magnitude;
+
+        if (wardstones.Count == 0)
+        {
+            if (distance < minWardRadius || distance > maxWardRadius)
+                return false;
+        }
+
         foreach (WardstoneController stone in wardstones)
         {
-            Vector3 offset = stone.transform.position - position;
-            offset.y = 0f;
+            Vector3 stoneOffset = position - stone.transform.position;
+            stoneOffset.y = 0f;
 
-            if (offset.magnitude < minimumStoneDistance)
-            {
+            if (stoneOffset.magnitude < minimumStoneDistance)
                 return false;
-            }
         }
+
         return true;
     }
 

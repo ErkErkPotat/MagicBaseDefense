@@ -1,6 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum SelectedTool
+{
+    BasicSpell,
+    Wardstone
+}
+
 public class PlayerController : MonoBehaviour
 {
     public GameObject BasicSpell;
@@ -9,9 +15,8 @@ public class PlayerController : MonoBehaviour
     public GameObject Wardstone;
     public Rigidbody rb;
     public LayerMask groundLayer;
-
+    public SelectedTool selectedTool = SelectedTool.BasicSpell;
     public Transform cameraTransform;
-    public float cameraAngle = 0f;
 
     Vector3 movement;
     Vector3 actualMovement;
@@ -22,7 +27,11 @@ public class PlayerController : MonoBehaviour
     public float sensitivity = 0.1f;
     public float spellSpeed = 75f;    
     public float placementTolerance = 2f;
+    public float cameraAngle = 0f;
 
+    public bool wardstoneSelected = false;
+    public bool spellSelected = true;
+    
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
@@ -73,16 +82,28 @@ public class PlayerController : MonoBehaviour
         //spell related code | Spell firing
         Vector3 spellSpawnPoint = transform.position + transform.forward * 2f;
 
-        if(Mouse.current.leftButton.wasPressedThisFrame)
+        if(Mouse.current.leftButton.wasPressedThisFrame && spellSelected)
         {
             GameObject spawnedSpell = Instantiate(BasicSpell, spellSpawnPoint, transform.rotation);
             Rigidbody spellRb = spawnedSpell.GetComponent<Rigidbody>();
             Vector3 spellDirection = cameraTransform.rotation * Quaternion.Euler(-verticalAimOffset,0,0) * Vector3.forward;
             spellRb.linearVelocity = spellSpeed * spellDirection;
         }
-
+        if(Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            selectedTool = SelectedTool.BasicSpell;
+            spellSelected = true;
+            wardstoneSelected = false;
+        }
         //ward related code | Wardstone placement
-        if(Mouse.current.rightButton.wasPressedThisFrame)
+        if(Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            selectedTool = SelectedTool.Wardstone;
+            spellSelected = false;
+            wardstoneSelected = true;
+        }
+
+        if(Mouse.current.rightButton.wasPressedThisFrame && wardstoneSelected)
         {
             Ray ray = new Ray(
                 cameraTransform.position,
@@ -94,19 +115,22 @@ public class PlayerController : MonoBehaviour
                 Vector3 offset = hit.point - wardController.baseTransform.position;
                 offset.y = 0f;
                 Vector3 wardstoneSpawnpoint = new Vector3 (hit.point.x, hit.point.y+1,hit.point.z); 
-
+                // magic number of 1 is due to the current
+                // prefab being 2 units tall, this ensures spawning AGL.
                 float distance = offset.magnitude;
 
                 if (wardController.wardstones.Count == 0 || Mathf.Abs(distance - wardController.wardRadius) <= placementTolerance)
                 {
-                    if (!wardController.CanPlaceWardstone(hit.point))
+                    if (wardController.CanPlaceWardstone(hit.point))
                     {
-                        Debug.Log("Too close to another wardstone!");
+                        GameObject placedWardstone = Instantiate(Wardstone, wardstoneSpawnpoint, Quaternion.identity);
+                        WardstoneController stoneController = placedWardstone.GetComponent<WardstoneController>();
+                        wardController.RegisterWardstone(stoneController);
+                    } else {
+                        Debug.Log("Invalid wardstone location!");
                         return;
                     }
-                    GameObject placedWardstone = Instantiate(Wardstone, wardstoneSpawnpoint, Quaternion.identity);
-                    WardstoneController stoneController = placedWardstone.GetComponent<WardstoneController>();
-                    wardController.RegisterWardstone(stoneController);
+                    
                 }
             }
         }

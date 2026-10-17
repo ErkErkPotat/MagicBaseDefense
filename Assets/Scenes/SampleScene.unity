@@ -637,12 +637,14 @@ MonoBehaviour:
   BasicWard: {fileID: 618315189}
   baseTransform: {fileID: 884972471}
   wardstones: []
+  placementCircle: {fileID: 1865808848}
+  minWardRadius: 8
+  maxWardRadius: 30
   wardRadius: 12.5
   minimumStoneDistance: 3
   minimumWardstones: 3
-  isActive: 0
-  placementCircle: {fileID: 1865808848}
   circleSegments: 100
+  isActive: 0
 --- !u!1 &728879971
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +755,7 @@ Transform:
   m_GameObject: {fileID: 728879971}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -12.61}
+  m_LocalPosition: {x: 0, y: 1, z: -8.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -807,13 +809,16 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  selectedTool: 0
   cameraTransform: {fileID: 330585546}
-  cameraAngle: 0
   verticalAimOffset: 2
   speed: 5
   sensitivity: 0.1
   spellSpeed: 75
   placementTolerance: 2
+  cameraAngle: 0
+  wardstoneSelected: 0
+  spellSelected: 1
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
