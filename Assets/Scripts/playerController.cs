@@ -9,14 +9,22 @@ public enum SelectedTool
 
 public class PlayerController : MonoBehaviour
 {
+    public SelectedTool selectedTool = SelectedTool.BasicSpell;
+    
     public GameObject BasicSpell;
     public GameObject BasicWard;
-    public WardController wardController;
     public GameObject Wardstone;
+    public GameObject wardstonePreview;
+
     public Rigidbody rb;
-    public LayerMask groundLayer;
-    public SelectedTool selectedTool = SelectedTool.BasicSpell;
     public Transform cameraTransform;
+    
+    public LayerMask groundLayer;
+    public Material ValidPositionMaterial;
+    public Material InvalidPositionMaterial;
+    private Renderer previewRenderer;
+    
+    public WardController wardController;
 
     Vector3 movement;
     Vector3 actualMovement;
@@ -39,6 +47,8 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+        previewRenderer = wardstonePreview.GetComponent<Renderer>();
+        wardstonePreview.SetActive(false);
     }
 
     void Update ()
@@ -82,7 +92,7 @@ public class PlayerController : MonoBehaviour
         //spell related code | Spell firing
         Vector3 spellSpawnPoint = transform.position + transform.forward * 2f;
 
-        if(Mouse.current.leftButton.wasPressedThisFrame && spellSelected)
+        if(Mouse.current.leftButton.wasPressedThisFrame && selectedTool == SelectedTool.BasicSpell)
         {
             GameObject spawnedSpell = Instantiate(BasicSpell, spellSpawnPoint, transform.rotation);
             Rigidbody spellRb = spawnedSpell.GetComponent<Rigidbody>();
@@ -92,18 +102,14 @@ public class PlayerController : MonoBehaviour
         if(Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             selectedTool = SelectedTool.BasicSpell;
-            spellSelected = true;
-            wardstoneSelected = false;
         }
         //ward related code | Wardstone placement
         if(Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             selectedTool = SelectedTool.Wardstone;
-            spellSelected = false;
-            wardstoneSelected = true;
         }
 
-        if(Mouse.current.rightButton.wasPressedThisFrame && wardstoneSelected)
+        if(Mouse.current.rightButton.wasPressedThisFrame && selectedTool == SelectedTool.Wardstone)
         {
             Ray ray = new Ray(
                 cameraTransform.position,
@@ -157,6 +163,7 @@ public class PlayerController : MonoBehaviour
         {
             movement.Normalize();
         }
+        UpdateWardstonePreview();
     }
     
     void OnCollisionStay (Collision collision)
@@ -173,6 +180,47 @@ public class PlayerController : MonoBehaviour
         }
         else {
             rb.linearVelocity = movement * speed; // physics movement
+        }
+    }
+
+    void UpdateWardstonePreview()
+    {
+        if (selectedTool != SelectedTool.Wardstone)
+        {
+            wardstonePreview.SetActive(false);
+            return;
+        }
+
+        Ray ray = new Ray(
+            cameraTransform.position,
+            cameraTransform.forward
+        );
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, groundLayer))
+        {
+            Vector3 spawnPosition = new Vector3(
+                hit.point.x,
+                hit.point.y + 1f,
+                hit.point.z
+            );
+
+            wardstonePreview.SetActive(true);
+            wardstonePreview.transform.position = spawnPosition;
+
+            Vector3 offset = hit.point - wardController.baseTransform.position;
+            offset.y = 0f;
+
+            float distance = offset.magnitude;
+            bool validRadius =
+                wardController.wardstones.Count == 0 ||
+                Mathf.Abs(distance - wardController.wardRadius) <= placementTolerance;
+
+            bool validPlacement = validRadius && wardController.CanPlaceWardstone(hit.point);
+            previewRenderer.sharedMaterial = validPlacement ? ValidPositionMaterial : InvalidPositionMaterial;
+        }
+        else
+        {
+            wardstonePreview.SetActive(false);
         }
     }
 }
