@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   spawnRadius: 25
+  currentWaveNumber: 0
   BaseHuntingEnemy: {fileID: 5931346687675898632, guid: 4e98e039ce1f0424bade652931280bbe, type: 3}
   target: {fileID: 884972471}
 --- !u!4 &49689327
@@ -708,6 +709,7 @@ MonoBehaviour:
   aePerConnection: 1
   efficiencyBonus: 0.5
   aeGenerationRate: 0
+  wardstoneCost: 50
   minimumWardstones: 3
   circleSegments: 100
   isActive: 0
@@ -880,6 +882,7 @@ MonoBehaviour:
   ValidPositionMaterial: {fileID: 2100000, guid: 16b2e96e6f60a9f4ba73664489c1994d, type: 2}
   InvalidPositionMaterial: {fileID: 2100000, guid: 59de4c4b8ce1e2045a793898d724ffce, type: 2}
   wardController: {fileID: 618315194}
+  waveController: {fileID: 49689326}
   verticalAimOffset: 2
   speed: 5
   sensitivity: 0.1

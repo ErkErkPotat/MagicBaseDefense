@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private Renderer previewRenderer;
     
     public WardController wardController;
+    public WaveController waveController;
 
     Vector3 movement;
     Vector3 actualMovement;
@@ -109,7 +110,10 @@ public class PlayerController : MonoBehaviour
             selectedTool = SelectedTool.Wardstone;
         }
 
-        if(Mouse.current.rightButton.wasPressedThisFrame && selectedTool == SelectedTool.Wardstone)
+        if( Mouse.current.rightButton.wasPressedThisFrame 
+            && selectedTool == SelectedTool.Wardstone 
+            && WardstonesUnlocked()
+            )
         {
             Ray ray = new Ray(
                 cameraTransform.position,
@@ -129,12 +133,29 @@ public class PlayerController : MonoBehaviour
                 {
                     if (wardController.CanPlaceWardstone(hit.point))
                     {
-                        GameObject placedWardstone = Instantiate(Wardstone, wardstoneSpawnpoint, Quaternion.identity);
-                        WardstoneController stoneController = placedWardstone.GetComponent<WardstoneController>();
-                        wardController.RegisterWardstone(stoneController);
-                    } else {
+                        float cost = wardController.GetNextWardstoneCost();
+
+                        if (wardController.aeController.SpendAE(cost))
+                        {
+                            GameObject placedWardstone = Instantiate(
+                                Wardstone,
+                                wardstoneSpawnpoint,
+                                Quaternion.identity
+                            );
+
+                            WardstoneController stoneController =
+                                placedWardstone.GetComponent<WardstoneController>();
+
+                            wardController.RegisterWardstone(stoneController);
+                        }
+                        else
+                        {
+                            Debug.Log($"Not enough AE! Wardstone costs {cost} AE.");
+                        }
+                    }
+                    else
+                    {
                         Debug.Log("Invalid wardstone location!");
-                        return;
                     }
                     
                 }
@@ -216,11 +237,24 @@ public class PlayerController : MonoBehaviour
                 Mathf.Abs(distance - wardController.wardRadius) <= placementTolerance;
 
             bool validPlacement = validRadius && wardController.CanPlaceWardstone(hit.point);
-            previewRenderer.sharedMaterial = validPlacement ? ValidPositionMaterial : InvalidPositionMaterial;
+
+            bool canAfford = wardController.aeController.currentAE
+                >= wardController.GetNextWardstoneCost();
+
+            bool canPlace = validPlacement && canAfford && WardstonesUnlocked();
+
+            previewRenderer.sharedMaterial = canPlace
+                ? ValidPositionMaterial
+                : InvalidPositionMaterial;
         }
         else
         {
             wardstonePreview.SetActive(false);
         }
+    }
+
+    bool WardstonesUnlocked()
+    {
+        return waveController.currentWaveNumber >= 3;
     }
 }

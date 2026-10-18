@@ -17,12 +17,17 @@ public class WardController : MonoBehaviour
     public float aePerConnection = 0.2f;
     public float efficiencyBonus = 0.5f;
     public float aeGenerationRate;
+    public float wardstoneCost = 50f;
 
     public int minimumWardstones = 3;
     public int circleSegments = 100;
     
     public bool isActive = false;
-    
+    public bool CanAffordWardstone()
+    {
+        return aeController.currentAE >= GetNextWardstoneCost();
+    }
+
     void Update()
     {
         if (isActive)
@@ -122,7 +127,6 @@ public class WardController : MonoBehaviour
             if (stoneOffset.magnitude < minimumStoneDistance)
                 return false;
         }
-
         return true;
     }
 
@@ -161,7 +165,7 @@ public class WardController : MonoBehaviour
 
     void CalculateConnections()
     {
-        Debug.Log($"CalculateConnections called! Stones: {wardstones.Count}");
+        //Debug.Log($"CalculateConnections called! Stones: {wardstones.Count}");
         if (wardstones.Count < 3)
             return;
 
@@ -204,6 +208,14 @@ public class WardController : MonoBehaviour
             * aePerConnection
             * (1f + efficiencyBonus * connectionEfficiency);
 
-        Debug.Log($"AE generation: {aeGenerationRate:F2} AE/s");
+        //Debug.Log($"AE generation: {aeGenerationRate:F2} AE/s");
+    }
+
+    public float GetNextWardstoneCost()
+    {
+        if (wardstones.Count < 3)
+            return 0f;
+
+        return wardstoneCost;
     }
 }

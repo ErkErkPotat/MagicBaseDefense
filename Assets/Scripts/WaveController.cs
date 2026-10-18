@@ -5,7 +5,7 @@ public class WaveController : MonoBehaviour
 {
     public float spawnRadius = 25f;
     private int enemiesAlive = 0;
-    private int currentWaveNumber = 0;
+    public int currentWaveNumber = 0;
     private bool finishedSpawning = false;
 
     public GameObject BaseHuntingEnemy;
@@ -77,7 +77,7 @@ public class WaveController : MonoBehaviour
         if (finishedSpawning && enemiesAlive == 0)
         {
             currentWaveNumber++;
-            Debug.Log("Wave complete!");
+            Debug.Log($"Wave {currentWaveNumber} complete!");
             StartCoroutine(StartNextWave());
         }
     }

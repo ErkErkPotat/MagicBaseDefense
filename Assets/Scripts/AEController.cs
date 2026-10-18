@@ -7,7 +7,7 @@ public class AEController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log($"Current AE: {currentAE:F2}");
+        //Debug.Log($"Current AE: {currentAE:F2}");
     }
 
     public void AddAE (float amountToAdd) 
