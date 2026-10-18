@@ -699,10 +699,15 @@ MonoBehaviour:
   baseTransform: {fileID: 884972471}
   wardstones: []
   placementCircle: {fileID: 1865808848}
+  aeController: {fileID: 1164611075}
   minWardRadius: 8
   maxWardRadius: 30
   wardRadius: 12.5
   minimumStoneDistance: 3
+  connectionEfficiency: 0
+  aePerConnection: 1
+  efficiencyBonus: 0.5
+  aeGenerationRate: 0
   minimumWardstones: 3
   circleSegments: 100
   isActive: 0
@@ -862,19 +867,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4382943f212a038479a8c913ea32f0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  selectedTool: 0
   BasicSpell: {fileID: 8644312147516469205, guid: ab63f86f2cee0d6418327ff0c8f76e7e, type: 3}
   BasicWard: {fileID: 618315189}
-  wardController: {fileID: 618315194}
   Wardstone: {fileID: 7599908860219778244, guid: 4286f5909a9cdd946af91bd1fb68130f, type: 3}
+  wardstonePreview: {fileID: 1231331529}
   rb: {fileID: 0}
+  cameraTransform: {fileID: 330585546}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  selectedTool: 0
-  cameraTransform: {fileID: 330585546}
-  wardstonePreview: {fileID: 1231331529}
   ValidPositionMaterial: {fileID: 2100000, guid: 16b2e96e6f60a9f4ba73664489c1994d, type: 2}
   InvalidPositionMaterial: {fileID: 2100000, guid: 59de4c4b8ce1e2045a793898d724ffce, type: 2}
+  wardController: {fileID: 618315194}
   verticalAimOffset: 2
   speed: 5
   sensitivity: 0.1
@@ -1197,6 +1202,52 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 1, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1164611074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1164611076}
+  - component: {fileID: 1164611075}
+  m_Layer: 0
+  m_Name: AEManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1164611075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164611074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5336cf4aeedc7ec4e86bfb812004dc5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AEController
+  currentAE: 0
+  maxAE: 10000
+--- !u!4 &1164611076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164611074}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1538,6 +1589,7 @@ SceneRoots:
   - {fileID: 884972471}
   - {fileID: 618315193}
   - {fileID: 49689327}
+  - {fileID: 1164611076}
   - {fileID: 1865808849}
   - {fileID: 1169127634}
   - {fileID: 202918049}

@@ -7,17 +7,30 @@ public class WardController : MonoBehaviour
     public Transform baseTransform;
     public List<WardstoneController> wardstones = new List<WardstoneController>();
     public LineRenderer placementCircle;
-
+    public AEController aeController;
+    
     public float minWardRadius = 8f;
     public float maxWardRadius = 30f;
     public float wardRadius;
     public float minimumStoneDistance = 3f;
-    
+    public float connectionEfficiency;
+    public float aePerConnection = 0.2f;
+    public float efficiencyBonus = 0.5f;
+    public float aeGenerationRate;
+
     public int minimumWardstones = 3;
     public int circleSegments = 100;
     
     public bool isActive = false;
     
+    void Update()
+    {
+        if (isActive)
+        {
+            aeController.AddAE(aeGenerationRate * Time.deltaTime);
+        }
+    }
+
     public void RegisterWardstone(WardstoneController stone)
     {
         wardstones.Add(stone);
@@ -33,9 +46,10 @@ public class WardController : MonoBehaviour
             UpdateWardSize();
             DrawPlacementCircle();
 
-
             //Debug.Log($"Ward radius: {wardRadius}");
         }
+        SortWardstones();
+        CalculateConnections();
     }
 
     void UpdateWardSize()
@@ -129,5 +143,67 @@ public class WardController : MonoBehaviour
 
             placementCircle.SetPosition(i, position);
         }
+    }
+
+    void SortWardstones()
+    {
+        wardstones.Sort((a, b) =>
+        {
+            Vector3 directionA = a.transform.position - baseTransform.position;
+            Vector3 directionB = b.transform.position - baseTransform.position;
+
+            float angleA = Mathf.Atan2(directionA.z, directionA.x);
+            float angleB = Mathf.Atan2(directionB.z, directionB.x);
+
+            return angleA.CompareTo(angleB);
+        });
+    }
+
+    void CalculateConnections()
+    {
+        Debug.Log($"CalculateConnections called! Stones: {wardstones.Count}");
+        if (wardstones.Count < 3)
+            return;
+
+        float idealGap = 360f / wardstones.Count;
+        float totalDeviation = 0f;
+
+        for (int i = 0; i < wardstones.Count; i++)
+        {
+            Vector3 currentDirection =
+                wardstones[i].transform.position - baseTransform.position;
+
+            Vector3 nextDirection =
+                wardstones[(i + 1) % wardstones.Count].transform.position
+                - baseTransform.position;
+
+            float currentAngle = Mathf.Atan2(
+                currentDirection.z, currentDirection.x
+            ) * Mathf.Rad2Deg;
+
+            float nextAngle = Mathf.Atan2(
+                nextDirection.z, nextDirection.x
+            ) * Mathf.Rad2Deg;
+
+            // Positive angle around the circle, even wraparound
+            float actualGap = Mathf.Repeat(nextAngle - currentAngle, 360f);
+
+            totalDeviation += Mathf.Abs(actualGap - idealGap);
+        }
+
+        float averageDeviation = totalDeviation / wardstones.Count;
+
+        connectionEfficiency =
+            Mathf.Clamp01(1f - averageDeviation / idealGap);
+
+        //Debug.Log($"Connection efficiency: {connectionEfficiency:P1}");
+
+        int connectionCount = wardstones.Count;
+
+        aeGenerationRate = connectionCount
+            * aePerConnection
+            * (1f + efficiencyBonus * connectionEfficiency);
+
+        Debug.Log($"AE generation: {aeGenerationRate:F2} AE/s");
     }
 }
