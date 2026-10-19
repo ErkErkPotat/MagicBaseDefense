@@ -14,7 +14,7 @@ public class WardController : MonoBehaviour
     public float wardRadius;
     public float minimumStoneDistance = 3f;
     public float connectionEfficiency;
-    public float aePerConnection = 0.2f;
+    public float aePerConnection = 0.1f;
     public float efficiencyBonus = 0.5f;
     public float aeGenerationRate;
     public float wardstoneCost = 50f;
