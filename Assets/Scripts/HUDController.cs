@@ -13,7 +13,12 @@ public class HUDController : MonoBehaviour
     void Update()
     {
         aeText.text = $"Ambient Energy:           {aeController.currentAE:F0} / {aeController.maxAE:F0}";
-        aeGenerationText.text = $"+{wardController.aeGenerationRate:F0} AE/s";
+        if(wardController.wardstones.Count >= 3 && wardController.isActive)
+        {
+            aeGenerationText.text = $"+{wardController.aeGenerationRate:F0} AE/s";
+        } else {
+            aeGenerationText.text = "";
+        }
         baseHealthText.text = $"Base Health: {baseController.baseCurrentHealth:F0}";
     }
 }
