@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 5f;
     public float sensitivity = 0.1f;
     public float spellSpeed = 75f;    
-    public float placementTolerance = 2f;
+    public float placementTolerance = 1f;
     public float cameraAngle = 0f;
 
     public bool wardstoneSelected = false;
