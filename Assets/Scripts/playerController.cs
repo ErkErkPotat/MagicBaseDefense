@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     public WardController wardController;
     public WaveController waveController;
 
+    public GameObject wardUpgradePanel;
+
     Vector3 movement;
     Vector3 actualMovement;
     Vector3 wallNormal;
@@ -87,6 +89,18 @@ public class PlayerController : MonoBehaviour
                 else if (BasicWard.activeSelf == true){
                     wardController.DeactivateWard();
                 }
+            }
+            if(baseController != null 
+            && baseController.isInteractable == true
+            && BasicWard.activeSelf == true 
+            && Keyboard.current.uKey.wasPressedThisFrame
+            ){
+                wardUpgradePanel.SetActive(true);
+            } 
+            else if(wardUpgradePanel.activeSelf == true
+            && Keyboard.current.uKey.wasPressedThisFrame
+            ){
+                wardUpgradePanel.SetActive(false);
             }
         }
     

@@ -18,9 +18,11 @@ public class WardController : MonoBehaviour
     public float efficiencyBonus = 0.5f;
     public float aeGenerationRate;
     public float wardstoneCost = 50f;
+    public float wardLevelBoost;
 
     public int minimumWardstones = 3;
     public int circleSegments = 100;
+    public int wardLevel = 1;
     
     public bool isActive = false;
     public bool CanAffordWardstone()
