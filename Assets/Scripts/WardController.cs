@@ -20,7 +20,8 @@ public class WardController : MonoBehaviour
     public float wardstoneCost = 50f;
     public float wardLevelBoost;
 
-    public int minimumWardstones = 3;
+    public int minimumWardstones = 3; // per ward
+    public int maximumWardstones = 7; // per ward
     public int circleSegments = 100;
     public int wardLevel = 1;
     

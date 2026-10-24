@@ -118,6 +118,7 @@ public class PlayerController : MonoBehaviour
         {
             selectedTool = SelectedTool.BasicSpell;
         }
+
         //ward related code | Wardstone placement
         if(Keyboard.current.digit2Key.wasPressedThisFrame)
         {
@@ -127,6 +128,7 @@ public class PlayerController : MonoBehaviour
         if( Mouse.current.rightButton.wasPressedThisFrame 
             && selectedTool == SelectedTool.Wardstone 
             && WardstonesUnlocked()
+            && LessThanMax()
             )
         {
             Ray ray = new Ray(
@@ -255,7 +257,7 @@ public class PlayerController : MonoBehaviour
             bool canAfford = wardController.aeController.currentAE
                 >= wardController.GetNextWardstoneCost();
 
-            bool canPlace = validPlacement && canAfford && WardstonesUnlocked();
+            bool canPlace = validPlacement && canAfford && LessThanMax() && WardstonesUnlocked();
 
             previewRenderer.sharedMaterial = canPlace
                 ? ValidPositionMaterial
@@ -270,5 +272,10 @@ public class PlayerController : MonoBehaviour
     bool WardstonesUnlocked()
     {
         return waveController.currentWaveNumber >= 3;
+    }
+
+    bool LessThanMax()
+    {
+        return wardController.wardstones.Count < wardController.maximumWardstones;
     }
 }
