@@ -8,11 +8,13 @@ public class HUDController : MonoBehaviour
     public BaseController baseController;
     public WaveController waveController;
 
+    // random texts
     public TMP_Text aeText;
     public TMP_Text aeGenerationText;
     public TMP_Text baseHealthText;
     public TMP_Text currentWaveText;
 
+    // ward texts
     public TMP_Text wardLevelText;
     public TMP_Text wardGenerationText;
     public TMP_Text wardDamageText;
