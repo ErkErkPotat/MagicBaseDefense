@@ -57,7 +57,3 @@ The game is being developed as a personal programming and game-development proje
 This project is a revival and expansion of a small magic-based base defense game originally developed as a vocational-school final project.
 
 The current version is being rebuilt with a greater emphasis on ward construction, resource management, and more complex gameplay systems.
-
-## License
-
-No license has been specified for this project.
